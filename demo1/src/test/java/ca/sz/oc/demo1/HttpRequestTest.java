@@ -51,7 +51,7 @@ public class HttpRequestTest {
                 String.class)).contains("from:");
     }
 
-    @Test
+    //@Test
     public void greetingShouldReturnDefaultMessage3() throws Exception {
         assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/hello/world/from/content",
                 String.class)).contains("content:");
