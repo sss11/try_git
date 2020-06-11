@@ -22,6 +22,9 @@ public class RestApi {
     @Value("${hello.world.from}")
     String from;
 
+    @Value("${hello.world.from2}")
+    String from2;
+
     @ApiOperation(value="get response",response=String.class)
     @ApiResponses(value={
         @ApiResponse(code=200,message="good",response=String.class),
@@ -36,7 +39,12 @@ public class RestApi {
 
     @GetMapping(value = "/world/from") //produces="application/text" ==> triggers download of text file
     public String helloWorldfrom() {
-        return "hello world spring boot ... from:" + from;
+        String ret = "hello world spring boot ... from:" + from;
+
+        if (!from2.equalsIgnoreCase("NONE"))
+            ret += "        |       " + from2;
+
+        return ret;
     }
 
     @GetMapping(value = "/world/from/content") //produces="application/text" ==> triggers download of text file
@@ -44,7 +52,13 @@ public class RestApi {
         RestTemplate restTemplate = new RestTemplate();
 
         String content = restTemplate.getForObject(from, String.class);
-        return "hello world spring boot ... from:" + from + " content:" + content;
+        String ret = "hello world spring boot ... from:" + from + " content:" + content;
+
+        if (!from2.equalsIgnoreCase("NONE")) {
+            String content2 = restTemplate.getForObject(from2, String.class);
+            ret += "        |       " + from2  + " content:" + content2;
+        }
+        return ret;
     }
 
     // @GetMapping("/crud")
