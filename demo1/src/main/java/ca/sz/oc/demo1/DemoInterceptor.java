@@ -21,11 +21,13 @@ public class DemoInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        log.info("DemoInterceptor, perHandle");
+        log.info("DemoInterceptor, preHandle");
         
         if (! letPass()) {
             log.info("DemoInterceptor, perHandle. letPass=false");
-            throw new Exception("letPass=false");
+            // throw new Exception("letPass=false");
+            response.setStatus(503);
+            return false;
         }
         return true;
     }
