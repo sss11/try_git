@@ -10,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.client.RestTemplate;
 
 // import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -17,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 @Api(value="/hello",description="helloworld",produces ="application/text")
 @RequestMapping(value = "/hello")
+@Slf4j
 public class RestApi {
 
     @Value("${hello.world.from}")
@@ -34,21 +37,27 @@ public class RestApi {
 
     @GetMapping(value = "/world") //produces="application/text" ==> triggers download of text file
     public String helloWorld() {
+        log.info("helloWorld started");
+        log.info("helloWorld ended");
         return "hello world spring boot";
     }
 
     @GetMapping(value = "/world/from") //produces="application/text" ==> triggers download of text file
     public String helloWorldfrom() {
+        log.info("helloWorldfrom ended");
+        
         String ret = "hello world spring boot ... from:" + from;
 
         if (!from2.equalsIgnoreCase("NONE"))
             ret += "        |       " + from2;
 
+        log.info("helloWorldfrom ended");
         return ret;
     }
 
     @GetMapping(value = "/world/from/content") //produces="application/text" ==> triggers download of text file
     public String helloWorldfromcontent() {
+        log.info("helloWorldfromcontent started");
         RestTemplate restTemplate = new RestTemplate();
 
         String content = restTemplate.getForObject(from, String.class);
@@ -58,6 +67,8 @@ public class RestApi {
             String content2 = restTemplate.getForObject(from2, String.class);
             ret += "        |       " + from2  + " content:" + content2;
         }
+
+        log.info("helloWorldfromcontent ended");
         return ret;
     }
 
