@@ -12,7 +12,7 @@ RUN mkdir -p /config
 
 EXPOSE 8080 
 
-ENV RUN_TIME=123 
+ENV v2=v-50-50-unhealthy
 
 
 ENTRYPOINT [ "sh", "-c", "printenv && java $JAVA_OPTS -jar /demo1.jar" ]
