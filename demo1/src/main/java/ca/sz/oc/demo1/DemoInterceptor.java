@@ -45,10 +45,21 @@ public class DemoInterceptor implements HandlerInterceptor {
 
         if ("v-50-50-unhealthy".equalsIgnoreCase(env.getProperty("SERVICE_VERSION"))) {
             double random = Math.random() * 100;
+
             ret = random > 50 ? true : false;
+            // if (Demo1Application.healthy == null) {
+            //     Demo1Application.healthy = ret;
+            //     log.info("letPass healthy={}", Demo1Application.healthy);
+            // }
             // log.info("Simple log statement with inputs {}, {} and {}", 1, 2, 3);
             log.info("v-50-50-unhealthy random={} health={}", (int) random, ret);
         }
+
+        if (Demo1Application.healthy!=null && Demo1Application.healthy) {
+            ret = true;
+            log.info("v-50-50-unhealthy healthy always");
+        }
+            
         return ret;
     }
 

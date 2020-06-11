@@ -35,6 +35,10 @@ public class RestApi {
         @ApiResponse(code=404,message="not found")
     })
 
+    @GetMapping(value = "/healthy") //produces="application/text" ==> triggers download of text file
+    public String helloHealthy() {
+        return Demo1Application.healthy==null? "unknown" : Demo1Application.healthy.toString();
+    }
     @GetMapping(value = "/world") //produces="application/text" ==> triggers download of text file
     public String helloWorld() {
         log.info("helloWorld started");
@@ -44,7 +48,7 @@ public class RestApi {
 
     @GetMapping(value = "/world/from") //produces="application/text" ==> triggers download of text file
     public String helloWorldfrom() {
-        log.info("helloWorldfrom ended");
+        log.info("helloWorldfrom started");
         
         String ret = "hello world spring boot ... from:" + from;
 
