@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +27,8 @@ public class DemoInterceptor implements HandlerInterceptor {
         if (! letPass()) {
             log.info("DemoInterceptor, perHandle. letPass=false");
             // throw new Exception("letPass=false");
-            response.setStatus(503);
+            // response.setStatus(503);
+            response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(), HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase());
             return false;
         }
         return true;
