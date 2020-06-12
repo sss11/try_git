@@ -14,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.client.RestTemplate;
 
-// import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
 @RestController
 @Api(value="/hello",description="helloworld",produces ="application/text")
 @RequestMapping(value = "/hello")
@@ -39,29 +37,35 @@ public class RestApi {
     public String helloHealthy() {
         return Demo1Application.healthy==null? "unknown" : Demo1Application.healthy.toString();
     }
+
+    
+    // @ResponseStatus(503)
+    // @GetMapping(value = "/error")
+    // void teaPot() {}
+
     @GetMapping(value = "/world") //produces="application/text" ==> triggers download of text file
     public String helloWorld() {
-        log.info("helloWorld started");
-        log.info("helloWorld ended");
+        // log.info("helloWorld started");
+        // log.info("helloWorld ended");
         return "hello world spring boot";
     }
 
     @GetMapping(value = "/world/from") //produces="application/text" ==> triggers download of text file
     public String helloWorldfrom() {
-        log.info("helloWorldfrom started");
+        // log.info("helloWorldfrom started");
         
         String ret = "hello world spring boot ... from:" + from;
 
         if (!from2.equalsIgnoreCase("NONE"))
             ret += "        |       " + from2;
 
-        log.info("helloWorldfrom ended");
+        // log.info("helloWorldfrom ended");
         return ret;
     }
 
     @GetMapping(value = "/world/from/content") //produces="application/text" ==> triggers download of text file
     public String helloWorldfromcontent() {
-        log.info("helloWorldfromcontent started");
+        // log.info("helloWorldfromcontent started");
         RestTemplate restTemplate = new RestTemplate();
 
         String content = restTemplate.getForObject(from, String.class);
@@ -72,7 +76,7 @@ public class RestApi {
             ret += "        |       " + from2  + " content:" + content2;
         }
 
-        log.info("helloWorldfromcontent ended");
+        // log.info("helloWorldfromcontent ended");
         return ret;
     }
 
