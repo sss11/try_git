@@ -83,11 +83,11 @@ public class DemoInterceptor implements HandlerInterceptor {
             return;
         }
 
-        if (null != env.getProperty("SERVER_ERROR")) {
-            int err = Integer.parseInt(env.getProperty("SERVER_ERROR"));
+        if (null != env.getProperty("SERVER_ERRORCODE")) {
+            int err = Integer.parseInt(env.getProperty("SERVER_ERRORCODE"));
             if (err>0) {
                 log.info("        return {}", err );
-                response.sendError(err, "SERVER_ERROR=" + err);
+                response.sendError(err, "SERVER_ERRORCODE=" + err);
             }
             return;
         }   
