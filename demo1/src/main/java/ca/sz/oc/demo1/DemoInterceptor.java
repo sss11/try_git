@@ -63,6 +63,15 @@ public class DemoInterceptor implements HandlerInterceptor {
             log.info("        v-50-50-unhealthy-always: ret={}", ret);
         }
     
+        if ("v-timeout-first-call".equalsIgnoreCase(env.getProperty("SERVICE_VERSION"))) {
+            try {
+                Thread.sleep(30 * 1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ret = false;//use together with 500 error
+        }
+
         log.info("    <<<<<<<<letPass={}", ret);
         return ret;
     }
