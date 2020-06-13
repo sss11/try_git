@@ -21,14 +21,14 @@ public class DemoInterceptor implements HandlerInterceptor {
     @Autowired
     Environment env;
 
-    String logprefix="    ";
-    
+    String logprefix = "    ";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         log.info("DemoInterceptor, preHandle>>>>>>>>");
-        
-        if (! letPass()) {
+
+        if (!letPass()) {
             returnError(response);
             return false;
         }
@@ -62,14 +62,19 @@ public class DemoInterceptor implements HandlerInterceptor {
             ret = Demo1Application.healthy;
             log.info("        v-50-50-unhealthy-always: ret={}", ret);
         }
-    
+
         if ("v-timeout-first-call".equalsIgnoreCase(env.getProperty("SERVICE_VERSION"))) {
-            try {
-                Thread.sleep(30 * 1000);
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (Demo1Application.count == 0) {
+                Demo1Application.count++;
+
+                try {
+                    Thread.sleep(30 * 1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ret = false;// use together with 500 error
             }
-            ret = false;//use together with 500 error
         }
 
         log.info("    <<<<<<<<letPass={}", ret);
@@ -83,23 +88,24 @@ public class DemoInterceptor implements HandlerInterceptor {
             // 500
             log.info("        return 500");
             throw new Exception("500");
-        } 
+        }
 
         if ("503".equalsIgnoreCase(env.getProperty("SERVER_ERROR"))) {
             // response.setStatus(503);
             log.info("        return 503");
-            response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(), HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase());
+            response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                    HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase());
             return;
         }
 
         if (null != env.getProperty("SERVER_ERRORCODE")) {
             int err = Integer.parseInt(env.getProperty("SERVER_ERRORCODE"));
-            if (err>0) {
-                log.info("        return {}", err );
+            if (err > 0) {
+                log.info("        return {}", err);
                 response.sendError(err, "SERVER_ERRORCODE=" + err);
             }
             return;
-        }   
+        }
     }
 
 }
