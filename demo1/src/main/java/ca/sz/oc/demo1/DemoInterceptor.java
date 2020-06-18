@@ -64,7 +64,13 @@ public class DemoInterceptor implements HandlerInterceptor {
         }
 
         if ("v-timeout-first-call".equalsIgnoreCase(env.getProperty("SERVICE_VERSION"))) {
-            if (Demo1Application.count == 0) {
+            
+            int errorCount = 1;
+            if (env.getProperty("ERROR_COUNT")!=null) {
+                errorCount = Integer.parseInt(env.getProperty("ERROR_COUNT"));
+            }
+
+            if (Demo1Application.count < errorCount) {
                 Demo1Application.count++;
 
                 try {
