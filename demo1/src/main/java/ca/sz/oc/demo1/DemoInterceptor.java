@@ -68,13 +68,20 @@ public class DemoInterceptor implements HandlerInterceptor {
             int errorCount = 1;
             if (env.getProperty("ERROR_COUNT")!=null) {
                 errorCount = Integer.parseInt(env.getProperty("ERROR_COUNT"));
+                log.info("        ERROR_COUNT={}", errorCount);
+            }
+
+            int sleepSec=30;
+            if (env.getProperty("SLEEP_SECOND")!=null) {
+                sleepSec = Integer.parseInt(env.getProperty("SLEEP_SECOND"));
+                log.info("        SLEEP_SECOND={}", sleepSec);
             }
 
             if (Demo1Application.count < errorCount) {
                 Demo1Application.count++;
 
                 try {
-                    Thread.sleep(30 * 1000);
+                    Thread.sleep(sleepSec * 1000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -90,13 +97,13 @@ public class DemoInterceptor implements HandlerInterceptor {
     private void returnError(HttpServletResponse response) throws Exception {
         log.info("    returnError>>>>>>>>>");
 
-        if ("500".equalsIgnoreCase(env.getProperty("SERVER_ERROR"))) {
+        if ("500".equalsIgnoreCase(env.getProperty("SERVER_ERRORCODE"))) {
             // 500
             log.info("        return 500");
             throw new Exception("500");
         }
 
-        if ("503".equalsIgnoreCase(env.getProperty("SERVER_ERROR"))) {
+        if ("503".equalsIgnoreCase(env.getProperty("SERVER_ERRORCODE"))) {
             // response.setStatus(503);
             log.info("        return 503");
             response.sendError(HttpStatus.SERVICE_UNAVAILABLE.value(),
