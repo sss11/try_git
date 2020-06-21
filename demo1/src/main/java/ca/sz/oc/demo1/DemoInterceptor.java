@@ -90,6 +90,34 @@ public class DemoInterceptor implements HandlerInterceptor {
             }
         }
 
+        if ("v-slow-call".equalsIgnoreCase(env.getProperty("SERVICE_VERSION"))) {
+            
+            int minSecond = 1;
+            if (env.getProperty("MIN_MS")!=null) {
+                minSecond = Integer.parseInt(env.getProperty("MIN_MS"));
+                log.info("        MIN_MS={}", minSecond);
+            }
+
+            int maxSecond = 1;
+            if (env.getProperty("MAX_MS")!=null) {
+                maxSecond = Integer.parseInt(env.getProperty("MAX_MS"));
+                log.info("        MAX_MS={}", maxSecond);
+            }
+            
+            int sleepMs=30;
+            sleepMs = minSecond + (int)((maxSecond - minSecond)*Math.random());
+
+            log.info("        v-slow-call: sleepMs={}", sleepMs);
+            
+            try {
+                Thread.sleep(sleepMs);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            ret = true;
+
+        }
+
         log.info("    <<<<<<<<letPass={}", ret);
         return ret;
     }
