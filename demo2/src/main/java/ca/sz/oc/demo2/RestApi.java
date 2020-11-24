@@ -15,8 +15,8 @@ import org.springframework.web.client.RestTemplate;
 // import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
-@Api(value="/hello",description="helloworld",produces ="application/text")
-@RequestMapping(value = "/hello2")
+@Api(value="/",description="helloworld",produces ="application/text")
+@RequestMapping(value = "/")
 public class RestApi {
 
     @ApiOperation(value="get response",response=String.class)
@@ -26,9 +26,14 @@ public class RestApi {
         @ApiResponse(code=404,message="not found")
     })
 
-    @GetMapping(value = "/world2") //produces="application/text" ==> triggers download of text file
-    public String helloWorld() {
+    @GetMapping(value = "/hello2/world2") //produces="application/text" ==> triggers download of text file
+    public String helloWorld2() {
         return "hello2 world2 spring boot";
+    }
+
+    @GetMapping(value = "/hello/world") //produces="application/text" ==> triggers download of text file
+    public String helloWorld() {
+        return "HELLO WORLD VERSION 2";
     }
 
     // @GetMapping("/crud")
